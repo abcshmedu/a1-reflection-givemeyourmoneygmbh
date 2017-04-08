@@ -5,7 +5,11 @@ package edu.hm.renderer;
 public class ArrayRenderer {
 
 
-
+    /**
+     *
+     * @param value
+     * @return
+     */
     public String render(int[] value) {
         StringBuilder result = new StringBuilder();
 

@@ -1,5 +1,6 @@
 package edu.hm.renderer;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,15 +21,20 @@ public class Renderer {
 
     }
 
-
+    /**
+     *
+     * @return
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws InstantiationException
+     */
     public String render() throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         StringBuilder result = new StringBuilder();
-        //TODO: access annotated elements via Java Reflection
 
-        //final RenderMe[] declaredAnnotationsByType =
-        //        object.getClass().getDeclaredAnnotationsByType(RenderMe.class);
-
-        result.append(String.format("Instance of %s:\n",object.getClass().getCanonicalName()));
+        final String className = object.getClass().getCanonicalName();
+        result.append(String.format("Instance of %s:\n",className));
 
         final Field[] declaredFields = object.getClass().getDeclaredFields();
 
@@ -42,8 +48,6 @@ public class Renderer {
                 if(annotation.with().isEmpty()) {
                     result.append(String.format("%s (Type %s): ", field.getName(), field.getType().getCanonicalName()));
 
-                    //final String name = field.getName();
-                    //final Class<?> type = field.getType();
                     result.append(field.get(object));
                     result.append("\n");
                 }
@@ -52,22 +56,43 @@ public class Renderer {
 
 
                     final String renderClassName = field.getAnnotation(RenderMe.class).with();
-                    Object value = field.get(object);
+                    final Object value = field.get(object);
 
-                    Class< ? > renderClass = Class.forName(renderClassName);
+                    final Class< ? > renderClass = Class.forName(renderClassName);
 
-                    Object renderObj = renderClass.getConstructor().newInstance();
-                    Method method = renderClass.getMethod("render", value.getClass());
-                    Object resultObj = method.invoke(renderObj, value);
+                    final Object renderObj = renderClass.getConstructor().newInstance();
+                    final Method method = renderClass.getMethod("render", value.getClass());
+                    final Object resultObj = method.invoke(renderObj, value);
                     result.append((String) resultObj);
                     result.append("\n");
 
                 }
 
 
-                //TODO: get Value
+            }
+        }
+
+
+        Method[] methods = object.getClass().getMethods();
+
+        for (Method method : methods) {
+
+
+            method.setAccessible(true);
+
+            if(method.isAnnotationPresent(RenderMe.class)){
+                try {
+                    Class<?> c = Class.forName(className);
+                    //Works only for constructors without parameters
+                    Object instance = c.newInstance();
+                    result.append(method.invoke(instance).toString());
+                }
+                catch (InvocationTargetException exception){
+
+                }
 
             }
+
         }
 
 
