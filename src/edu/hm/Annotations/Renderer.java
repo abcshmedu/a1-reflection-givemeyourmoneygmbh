@@ -19,6 +19,11 @@ public class Renderer {
         String result = "";
         //TODO: access annotated elements via Java Reflection
 
+        final RenderMe[] declaredAnnotationsByType =
+                object.getClass().getDeclaredAnnotationsByType(RenderMe.class);
+
+
+
         return result;
     }
 
