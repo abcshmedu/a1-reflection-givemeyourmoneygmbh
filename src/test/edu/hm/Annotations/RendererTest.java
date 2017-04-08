@@ -1,5 +1,6 @@
 package edu.hm.Annotations;
 
+import edu.hm.SomeClass;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -18,12 +18,14 @@ public class Renderer {
     }
 
 
-    public String render(){
-        String result = "";
+    public String render() throws IllegalAccessException {
+        StringBuilder result = new StringBuilder();
         //TODO: access annotated elements via Java Reflection
 
         //final RenderMe[] declaredAnnotationsByType =
         //        object.getClass().getDeclaredAnnotationsByType(RenderMe.class);
+
+        result.append(String.format("Instance of %s:\n",object.getClass().getCanonicalName()));
 
         final Field[] declaredFields = object.getClass().getDeclaredFields();
 
@@ -31,16 +33,18 @@ public class Renderer {
             field.setAccessible(true);
 
             if(field.isAnnotationPresent(RenderMe.class)){
-                final String name = field.getName();
-                final Class<?> type = field.getType();
-
+                //final String name = field.getName();
+                //final Class<?> type = field.getType();
+                result.append(String.format("%s (Type %s): ",field.getName(),field.getType().getCanonicalName()));
+                result.append(field.get(object));
+                result.append("\n");
                 //TODO: get Value
 
             }
         }
 
 
-        return result;
+        return result.toString();
     }
 
 }
