@@ -1,5 +1,5 @@
 package edu.hm;
-import edu.hm.Annotations.RenderMe;
+import edu.hm.renderer.RenderMe;
 
 import java.util.Date;
 

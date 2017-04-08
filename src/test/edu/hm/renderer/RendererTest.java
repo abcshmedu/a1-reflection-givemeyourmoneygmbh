@@ -1,4 +1,4 @@
-package edu.hm.Annotations;
+package edu.hm.renderer;
 
 import edu.hm.SomeClass;
 import org.junit.Before;
