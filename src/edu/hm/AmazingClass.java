@@ -10,7 +10,7 @@ public class AmazingClass {
     @RenderMe
     private int privateMethod(){
 
-        return 1;
+        return 0;
     }
 
     @RenderMe
@@ -19,6 +19,19 @@ public class AmazingClass {
         return 0;
     }
 
+
+    @RenderMe(with="edu.hm.renderer.ArrayRenderer")
+    public int[] publicMethodWith(){
+
+        int[] result ={0, 0};
+        return result;
+    }
+
+    @RenderMe(with="edu.hm.renderer.ArrayRenderer")
+    private int[] privateMethodWith(){
+        int[] result ={0, 0};
+        return result;
+    }
 
     public AmazingClass() {
 

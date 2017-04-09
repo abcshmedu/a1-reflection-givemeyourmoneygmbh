@@ -63,17 +63,15 @@ public class Renderer {
                     final Object renderObj = renderClass.getConstructor().newInstance();
                     final Method method = renderClass.getMethod("render", value.getClass());
                     final Object resultObj = method.invoke(renderObj, value);
-                    result.append((String) resultObj);
+                    result.append(resultObj.toString());
                     result.append("\n");
 
                 }
-
-
             }
         }
 
 
-        Method[] methods = object.getClass().getMethods();
+        Method[] methods = object.getClass().getDeclaredMethods();
 
         for (Method method : methods) {
 
@@ -81,11 +79,35 @@ public class Renderer {
             method.setAccessible(true);
 
             if(method.isAnnotationPresent(RenderMe.class)){
+                final RenderMe annotation = method.getAnnotation(RenderMe.class);
+
                 try {
-                    Class<?> c = Class.forName(className);
-                    //Works only for constructors without parameters
-                    Object instance = c.newInstance();
-                    result.append(method.invoke(instance).toString());
+                    if(annotation.with().isEmpty()) {
+                        Class<?> c = Class.forName(className);
+                        //Works only for constructors without parameters
+                        Object instance = c.newInstance();
+                        result.append(method.invoke(instance).toString());
+                        result.append("\n");
+                    }
+                    else{
+                        result.append(String.format("%s (Type %s) ", method.getName(), method.getReturnType().getCanonicalName()));
+
+                        final String renderClassName = method.getAnnotation(RenderMe.class).with();
+
+                        Class<?> c = Class.forName(className);
+                        //Works only for constructors without parameters
+                        Object instance = c.newInstance();
+                        final Object value = method.invoke(instance);
+
+                        final Class< ? > renderClass = Class.forName(renderClassName);
+
+                        final Object renderObj = renderClass.getConstructor().newInstance();
+                        final Method methodRender = renderClass.getMethod("render", value.getClass());
+                        final Object resultObj = methodRender.invoke(renderObj, value);
+                        result.append(resultObj.toString());
+                        result.append("\n");
+
+                    }
                 }
                 catch (InvocationTargetException exception){
 
