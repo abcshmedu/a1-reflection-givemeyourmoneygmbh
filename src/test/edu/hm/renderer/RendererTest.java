@@ -64,8 +64,6 @@ public class RendererTest {
         amazingClass = new AmazingClass();
     }
 
-
-
     /**
      * Test fuer Felder.
      *
@@ -78,6 +76,7 @@ public class RendererTest {
     @Test
     public void testRendering() throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         assertEquals("Instance of edu.hm.SomeClass:\n" + "foo (Type int): 5\narray (Type int[]): [1, 2, 3, ]\ndate (Type java.util.Date): Fri Jan 02 11:17:36 CET 1970\n", renderer.render());
+        assertEquals(new Renderer(new SomeClass(intGiven)).render(),expectedReturnValue);
     }
 
     /**
