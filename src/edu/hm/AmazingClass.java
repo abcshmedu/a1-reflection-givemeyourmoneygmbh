@@ -8,28 +8,24 @@ import edu.hm.renderer.RenderMe;
 public class AmazingClass {
 
     @RenderMe
-    private int privateMethod(){
-
+    private int privateMethod() {
         return 0;
     }
 
     @RenderMe
-    public int publicMethod(){
-
+    public int publicMethod() {
         return 0;
     }
 
-
-    @RenderMe(with="edu.hm.renderer.ArrayRenderer")
-    public int[] publicMethodWith(){
-
-        int[] result ={0, 0};
+    @RenderMe(with = "edu.hm.renderer.ArrayRenderer")
+    public int[] publicMethodWith() {
+        int[] result = {0, 0};
         return result;
     }
 
-    @RenderMe(with="edu.hm.renderer.ArrayRenderer")
-    private int[] privateMethodWith(){
-        int[] result ={0, 0};
+    @RenderMe(with = "edu.hm.renderer.ArrayRenderer")
+    private int[] privateMethodWith() {
+        int[] result = {0, 0};
         return result;
     }
 

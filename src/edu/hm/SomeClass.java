@@ -1,4 +1,5 @@
 package edu.hm;
+
 import edu.hm.renderer.RenderMe;
 
 import java.util.Date;
@@ -9,11 +10,36 @@ import java.util.Date;
 public class SomeClass {
     @RenderMe
     private int foo;
-    @RenderMe(with="edu.hm.renderer.ArrayRenderer") int[] array = {1, 2, 3, };
-    @RenderMe private Date date = new Date(123456789);
-
+    @RenderMe(with = "edu.hm.renderer.ArrayRenderer")
+    protected int[] array = {1, 2, 3};
+    @RenderMe
+    public Date date = new Date(123456789);
 
     public SomeClass(int foo) {
         this.foo = foo;
+    }
+
+    public int getFoo() {
+        return foo;
+    }
+
+    public void setFoo(int foo) {
+        this.foo = foo;
+    }
+
+    public int[] getArray() {
+        return array;
+    }
+
+    public void setArray(int[] array) {
+        this.array = array;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

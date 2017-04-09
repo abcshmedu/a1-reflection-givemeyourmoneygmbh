@@ -1,4 +1,5 @@
 package edu.hm.renderer;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -7,6 +8,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RenderMe {
-    String   with() default "";
+    String with() default "";
 }
 

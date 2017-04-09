@@ -1,9 +1,10 @@
 package edu.hm.renderer;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by ifw14087 on 27.03.2017.
@@ -22,7 +23,6 @@ public class Renderer {
     }
 
     /**
-     *
      * @return
      * @throws IllegalAccessException
      * @throws ClassNotFoundException
@@ -34,26 +34,23 @@ public class Renderer {
         StringBuilder result = new StringBuilder();
 
         final String className = object.getClass().getCanonicalName();
-        result.append(String.format("Instance of %s:\n",className));
+        result.append(String.format("Instance of %s:\n", className));
 
         final Field[] declaredFields = object.getClass().getDeclaredFields();
 
-        for (Field field :declaredFields) {
+        for (Field field : declaredFields) {
             field.setAccessible(true);
 
-            if(field.isAnnotationPresent(RenderMe.class)){
+            if (field.isAnnotationPresent(RenderMe.class)) {
                 final RenderMe annotation = field.getAnnotation(RenderMe.class);
 
+                result.append(String.format("%s (Type %s): ", field.getName(), field.getType().getCanonicalName()));
 
-                if(annotation.with().isEmpty()) {
-                    result.append(String.format("%s (Type %s): ", field.getName(), field.getType().getCanonicalName()));
+                if (annotation.with().isEmpty()) {
 
                     result.append(field.get(object));
                     result.append("\n");
-                }
-                else{
-                    result.append(String.format("%s (Type %s) ", field.getName(), field.getType().getCanonicalName()));
-
+                } else {
 
                     final String renderClassName = field.getAnnotation(RenderMe.class).with();
                     final Object value = field.get(object);
@@ -73,28 +70,30 @@ public class Renderer {
 
         Method[] methods = object.getClass().getDeclaredMethods();
 
+        List< Method > methodList = Arrays.asList(methods);
+        methodList.sort((m1, m2) -> m1.getName().compareTo(m2.getName()));
+
         for (Method method : methods) {
 
 
             method.setAccessible(true);
 
-            if(method.isAnnotationPresent(RenderMe.class)){
+            if (method.isAnnotationPresent(RenderMe.class)) {
                 final RenderMe annotation = method.getAnnotation(RenderMe.class);
 
                 try {
-                    if(annotation.with().isEmpty()) {
-                        Class<?> c = Class.forName(className);
+                    result.append(String.format("%s (Type %s): ", method.getName(), method.getReturnType().getCanonicalName()));
+                    if (annotation.with().isEmpty()) {
+                        Class< ? > c = Class.forName(className);
                         //Works only for constructors without parameters
                         Object instance = c.newInstance();
                         result.append(method.invoke(instance).toString());
                         result.append("\n");
-                    }
-                    else{
-                        result.append(String.format("%s (Type %s) ", method.getName(), method.getReturnType().getCanonicalName()));
+                    } else {
 
                         final String renderClassName = method.getAnnotation(RenderMe.class).with();
 
-                        Class<?> c = Class.forName(className);
+                        Class< ? > c = Class.forName(className);
                         //Works only for constructors without parameters
                         Object instance = c.newInstance();
                         final Object value = method.invoke(instance);
@@ -108,8 +107,7 @@ public class Renderer {
                         result.append("\n");
 
                     }
-                }
-                catch (InvocationTargetException exception){
+                } catch (InvocationTargetException exception) {
 
                 }
 
