@@ -8,6 +8,10 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RenderMe {
+    /**
+     * Methode zum auslesen etwaiger spezieller Renderklassen.
+     * @return String spezielle Renderklassen
+     */
     String with() default "";
 }
 

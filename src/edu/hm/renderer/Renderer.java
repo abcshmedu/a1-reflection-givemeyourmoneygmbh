@@ -14,24 +14,26 @@ import java.util.List;
  */
 public class Renderer {
 
-
     private Object object;
 
+    /**
+     * Konstruktor, der das zu untersuchende Object entgegen nimmt.
+     * @param object das zu untersuchende Object.s
+     */
     public Renderer(Object object) {
         this.object = object;
-
     }
 
     /**
-     * @return
-     * @throws IllegalAccessException
-     * @throws ClassNotFoundException
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws InstantiationException
+     * @return String result - Der konkatinierte String, der die Object-Informationen enthaelt
+     * @throws IllegalAccessException    -
+     * @throws ClassNotFoundException    -
+     * @throws NoSuchMethodException     -
+     * @throws InvocationTargetException -
+     * @throws InstantiationException    -
      */
     public String render() throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
 
         final String className = object.getClass().getCanonicalName();
         result.append(String.format("Instance of %s:\n", className));
@@ -47,7 +49,6 @@ public class Renderer {
                 result.append(String.format("%s (Type %s): ", field.getName(), field.getType().getCanonicalName()));
 
                 if (annotation.with().isEmpty()) {
-
                     result.append(field.get(object));
                     result.append("\n");
                 } else {
@@ -74,7 +75,6 @@ public class Renderer {
         methodList.sort((m1, m2) -> m1.getName().compareTo(m2.getName()));
 
         for (Method method : methods) {
-
 
             method.setAccessible(true);
 
@@ -105,18 +105,12 @@ public class Renderer {
                         final Object resultObj = methodRender.invoke(renderObj, value);
                         result.append(resultObj.toString());
                         result.append("\n");
-
                     }
                 } catch (InvocationTargetException exception) {
-
+                    exception.printStackTrace();
                 }
-
             }
-
         }
-
-
         return result.toString();
     }
-
 }

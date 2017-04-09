@@ -7,8 +7,8 @@ public class ArrayRenderer {
 
 
     /**
-     * @param value
-     * @return
+     * @param value IntegerArray.
+     * @return String -
      */
     public String render(int[] value) {
         StringBuilder result = new StringBuilder();
