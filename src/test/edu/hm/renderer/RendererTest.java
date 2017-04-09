@@ -5,7 +5,6 @@ import edu.hm.SomeClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -37,16 +36,11 @@ public class RendererTest {
     @Test
     public void renderMethods() throws Exception {
 
-        String result1 = "Instance of edu.hm.AmazingClass:\n" + "publicMethodWith (Type int[]): [0, 0, ]\nprivateMethodWith (Type int[]): [0, 0, ]\n0\n0\n";
-        String result2 = "Instance of edu.hm.AmazingClass:\n" + "0\n0\npublicMethodWith (Type int[]): [0, 0, ]\nprivateMethodWith (Type int[]): [0, 0, ]\n";
-
-        String result3 = "Instance of edu.hm.AmazingClass:\n" + "privateMethodWith (Type int[]): [0, 0, ]\npublicMethodWith (Type int[]): [0, 0, ]\n0\n0\n";
-        String result4 = "Instance of edu.hm.AmazingClass:\n" + "0\n0\nprivateMethodWith (Type int[]): [0, 0, ]\npublicMethodWith (Type int[]): [0, 0, ]\n";
+        String expected = "Instance of edu.hm.AmazingClass:\n" + "privateMethod (Type int): 0\nprivateMethodWith (Type int[]): [0, 0, ]\npublicMethod (Type int): 0\npublicMethodWith (Type int[]): [0, 0, ]\n";
 
         String result = new Renderer(amazingClass).render();
-        System.out.println(result);
-        assertTrue(result1.equals(result) || result2.equals(result) || result3.equals(result) || result4.equals(result));
-        //assertEquals("Instance of edu.hm.AmazingClass:\n" + "0\n0\n", result);
+        //System.out.println(result);
+        assertEquals(expected, result);
     }
 
 
